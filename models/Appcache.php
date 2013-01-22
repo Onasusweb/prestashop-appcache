@@ -17,11 +17,16 @@ class Appcache {
 	/**
 	 *	Parse a directory to get all the filenames
 	 *
-	 *	@param string $extension
+	 *	@param string $path Path to the directory
+	 *	@param string $extension Extension of the files to return
 	 *	@return array
 	 */
-	public function parseDirectory($extension) {
+	public function parseDirectory($path, $extension) {
+		$files = scandir($path);
 
+		// filter the files to only return the type wanted
+
+		return $files;
 	}
 
 	/**
