@@ -14,11 +14,11 @@ class Appcache {
 
 	public function generate() {
 		// css
-		$this->parseDirectory(_PS_THEME_DIR_.'css', 'css');
+		$this->parseDirectory(_PS_THEME_DIR_.'css', array('css'));
 		// js
-		$this->parseDirectory(_PS_THEME_DIR_.'js', 'js');
+		$this->parseDirectory(_PS_THEME_DIR_.'js', array('js'));
 		// img
-		$this->parseDirectory(_PS_THEME_DIR_.'img', 'png');
+		$this->parseDirectory(_PS_THEME_DIR_.'img', array('png', 'gif', 'jpg'));
 		return $this->write();
 	}
 
@@ -26,18 +26,17 @@ class Appcache {
 	 *	Parse a directory to get all the filenames
 	 *
 	 *	@param string $path Path to the directory
-	 *	@param string $extension Extension of the files to return
+	 *	@param array $extension Extensions of the files to keep
 	 */
 	public function parseDirectory($path, $extension) {
 		$files = scandir($path);
 		$result = array();
 
 		// @TODO parse sub directories
-		// @TODO use array for extension (for png / jpg...)
 		// filter the files to only return the type wanted
 		foreach ($files as $file) {
 			$infos = pathInfo($path.$file);
-			if (isset($infos['extension']) && $infos['extension'] == $extension) {
+			if (isset($infos['extension']) && in_array($infos['extension'], $extension)) {
 				$diff = str_replace(_PS_THEME_DIR_, '', $path);
 				$this->files[] = _PS_BASE_URL_.__PS_BASE_URI__.'themes/'._THEME_NAME_.'/'.$diff.'/'.$file;
 			}
