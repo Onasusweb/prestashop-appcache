@@ -30,6 +30,8 @@ class PrestashopAppcache extends Module {
         $tab->id_parent = 17;
         $tab->add();
 
+        Configuration::updateValue('OFFLINE_PAGE', 0);
+
 		if (!parent::install())
 			return false;
 		return true;
