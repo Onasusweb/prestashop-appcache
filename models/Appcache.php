@@ -13,10 +13,20 @@ class Appcache {
 	private $files;
 
 	public function generate() {
-		// css
-		$this->parseDirectory(_PS_THEME_DIR_.'css', array('css'));
-		// js
-		$this->parseDirectory(_PS_THEME_DIR_.'js', array('js'));
+		if (Configuration::get('PS_CSS_THEME_CACHE')) {
+			$this->parseDirectory(_PS_THEME_DIR_.'cache', array('css'));
+		}
+		else {
+			$this->parseDirectory(_PS_THEME_DIR_.'css', array('css'));
+		}
+
+		if (Configuration::get('PS_JS_THEME_CACHE')) {
+			$this->parseDirectory(_PS_THEME_DIR_.'cache', array('js'));
+		}
+		else {
+			$this->parseDirectory(_PS_THEME_DIR_.'js', array('js'));
+		}
+
 		// img
 		$this->parseDirectory(_PS_THEME_DIR_.'img', array('png', 'gif', 'jpg'));
 		return $this->write();
