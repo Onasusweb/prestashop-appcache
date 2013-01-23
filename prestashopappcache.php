@@ -50,11 +50,12 @@ class PrestashopAppcache extends Module {
     }
 
     /**
-     *  Automatically creates the manifest file when the htaccess is generated
+     *  Add the manifest appcache mime type to htaccess
      */
     public function hookActionHtaccessCreate($params) {
-        $appcache = new Appcache;
-        $appcache->generate();
+        $file = fopen(_PS_ROOT_DIR_.'/.htaccess', 'a');
+        fwrite($file, "\n\nAddType text/cache-manifest .appcache\n");
+        fclose($file);
     }
 
 }

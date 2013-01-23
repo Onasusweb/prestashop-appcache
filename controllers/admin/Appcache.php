@@ -83,7 +83,6 @@ class Appcache {
         }
 
         $content .= "\nNETWORK:\n*\n";
-
         $file = fopen(_PS_ROOT_DIR_.'/manifest.appcache', 'w');
         fwrite($file, $content);
 
