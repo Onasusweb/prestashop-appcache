@@ -37,6 +37,8 @@ class Appcache {
         // img
         $this->parseDirectory(_PS_THEME_DIR_.'img', array('png', 'gif', 'jpg'));
 
+        $this->addAttribute();
+
         return $this->write();
     }
 
@@ -67,7 +69,20 @@ class Appcache {
      *  to be a pain in the ass so we'll see
      */
     public function addAttribute() {
+        $filename = _PS_THEME_DIR_.'header.tpl';
+        if (!file_exists($filename)) {
+            return false;
+        }
 
+        $content = file_get_contents($filename);
+        // I nailed this regex at first try. Unfuckingbelievable
+        $pattern = '/<html (.*?)>/i';
+        $content = preg_replace($pattern, '<html $1 manifest="manifest.appcache">', $content);
+
+        $file = fopen($filename, 'w');
+        fwrite($file, $content);
+
+        return fclose($file);
     }
 
     /**
