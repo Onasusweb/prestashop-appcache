@@ -65,8 +65,6 @@ class Appcache {
 
     /**
      *  Make sure the appcache attribute is in the html tag
-     *  At least that's the goal but parsing html is going
-     *  to be a pain in the ass so we'll see
      */
     public function addAttribute() {
         $filename = _PS_THEME_DIR_.'header.tpl';
