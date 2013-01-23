@@ -8,8 +8,6 @@
  *  @version 0.1
  */
 
-require _PS_MODULE_DIR_.'prestashopappcache/controllers/admin/Appcache.php';
-
 class PrestashopAppcache extends Module {
 
     public function __construct() {
