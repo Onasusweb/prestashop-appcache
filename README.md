@@ -6,7 +6,7 @@
 
 ## Installation
 
-  Clone this repo in the `/modules` directory of your site. Then run `mv prestashop-appcache prestashopappcache`.
+  Clone this repo in the `/modules` directory of your site. Then run `$ mv prestashop-appcache prestashopappcache`.
 
   Install the module in your site back office. You can then generate the manifest file in Advanced parameters > Application Cache. Sadly Prestashop does not provide a hook to trigger action after the performances settings are changed so you will have to generate it every time you change something here.
 
