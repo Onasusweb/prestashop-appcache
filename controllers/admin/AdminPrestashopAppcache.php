@@ -52,19 +52,18 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
     }
 
     public function postProcess() {
-        $appcache = new Appcache;
-        if (isset($_POST['generateAppcache']) && Configuration::get('ACTIVATE_APPCACHE')) {
-            $result = $appcache->generate();
+        parent::postProcess();
 
+        $appcache = new Appcache;
+        if (Configuration::get('ACTIVATE_APPCACHE') == 1) {
+            $result = $appcache->generate();
             if (!$result) {
                 $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
             }
         }
-        else if (isset($_POST['generateAppcache']) && !Configuration::get('ACTIVATE_APPCACHE')) {
+        else if (Configuration::get('ACTIVATE_APPCACHE') == 0) {
             $appcache->disable();
         }
-
-        parent::postProcess();
     }
 
 }

@@ -115,8 +115,28 @@ class Appcache {
      *  Remove the manifest file and the manifest attribute
      */
     public function disable() {
+        if (file_exists(_PS_ROOT_DIR_.'/manifest.appcache')) {
+            unlink(_PS_ROOT_DIR_.'/manifest.appcache');
+        }
 
-        return 'wat';
+        $filename = _PS_THEME_DIR_.'header.tpl';
+        if (!file_exists($filename)) {
+            return false;
+        }
+
+        $content = file_get_contents($filename);
+        // check if the atttribute is here
+        $attr = '/manifest="manifest.appcache"/';
+        preg_match($attr, $content, $matches);
+        if ($matches) {
+            $pattern = '/<html (.*?) (manifest="manifest.appcache")>/i';
+            $content = preg_replace($pattern, '<html $1>', $content);
+
+            $file = fopen($filename, 'w');
+            fwrite($file, $content);
+
+            return fclose($file);
+        }
     }
 
 }
