@@ -14,28 +14,33 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
 
     public function __construct() {
         $this->className    = 'AdminPrestashopAppcache';
+        $this->table = 'configuration';
+
+        $fields = array(
+            'ACTIVATE_APPCACHE' => array(
+                'title' => $this->l('Application Cache'),
+                'desc' => $this->l('Enable the application cache'),
+                'cast' => 'intval',
+                'type' => 'bool',
+                'default' => '1'
+            ),
+
+            'OFFLINE_PAGE' => array(
+                'title' => $this->l('Offline page'),
+                'desc' => $this->l('Display dedicated page when the user is offline'),
+                'cast' => 'intval',
+                'type' => 'bool',
+                'default' => '1'
+            )
+        );
 
         $this->fields_options = array(
-            'appcache' => array(
+            'general' => array(
                 'title' =>  $this->l('Application Cache'),
-                'icon' =>   'tab-orders',
-                'top' => '',
-                'bottom' => '',
-                'fields' => array(
-                    'OFFLINE_PAGE' => array(
-                        'title' => $this->l('Offline page'),
-                        'show' => true,
-                        'type' => 'radio',
-                        'choices' => array('on' => $this->l('Enable offline page'), 'off' => $this->l('Disable offline page'))
-                    ),
-                    'IGNORE_DIRECTORY' => array(
-                        'title' => $this->l('Directories to ignore'),
-                        'show' => true,
-                        'type' => 'text'
-                    )
-                ),
-                'submit' => array('name' => 'generateAppcache')
-            )
+                'image' => '../img/t/AdminAdminPreferences.gif',
+                'fields' => $fields,
+                'submit' => array('title' => $this->l('   Save   '), 'class' => 'button'),
+            ),
         );
 
         parent :: __construct();
@@ -47,14 +52,19 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
     }
 
     public function postProcess() {
-        if (isset($_POST['generateAppcache'])) {
-            $appcache = new Appcache;
+        $appcache = new Appcache;
+        if (isset($_POST['generateAppcache']) && Configuration::get('ACTIVATE_APPCACHE')) {
             $result = $appcache->generate();
 
             if (!$result) {
                 $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
             }
         }
+        else if (isset($_POST['generateAppcache']) && !Configuration::get('ACTIVATE_APPCACHE')) {
+            $appcache->disable();
+        }
+
+        parent::postProcess();
     }
 
 }

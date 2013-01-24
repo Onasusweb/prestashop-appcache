@@ -110,4 +110,13 @@ class Appcache {
         return fclose($file);
     }
 
+    /**
+     *  Triggered if the application cache is disabled
+     *  Remove the manifest file and the manifest attribute
+     */
+    public function disable() {
+
+        return 'wat';
+    }
+
 }
