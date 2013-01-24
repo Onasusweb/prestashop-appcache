@@ -12,6 +12,5 @@
 
 ## Features
 
-  * Makes your site faster by caching the CSS and JavaScript files, and the images.
-  * Allows to add or ignore directories with extensions
-  *	Allows the creation of a page to display to the user when they are offline
+  * Generates the manifest file to make the browser cache the CSS and Javascript files and images.
+  * Automatically add the manifest attribute to the html tag and the necessary mime type to the htaccess

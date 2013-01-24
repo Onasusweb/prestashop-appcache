@@ -75,14 +75,22 @@ class Appcache {
         }
 
         $content = file_get_contents($filename);
-        // I nailed this regex at first try. Unfuckingbelievable
-        $pattern = '/<html (.*?)>/i';
-        $content = preg_replace($pattern, '<html $1 manifest="manifest.appcache">', $content);
+        // check if the atttribute is here
+        $attr = '/manifest="manifest.appcache"/';
+        preg_match($attr, $content, $matches);
+        if ($matches) {
+            return true;
+        }
+        else {
+            // I nailed this regex at first try. Unfuckingbelievable
+            $pattern = '/<html (.*?)>/i';
+            $content = preg_replace($pattern, '<html $1 manifest="manifest.appcache">', $content);
 
-        $file = fopen($filename, 'w');
-        fwrite($file, $content);
+            $file = fopen($filename, 'w');
+            fwrite($file, $content);
 
-        return fclose($file);
+            return fclose($file);
+        }
     }
 
     /**
