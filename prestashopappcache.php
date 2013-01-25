@@ -8,14 +8,12 @@
  *  @version 0.1
  */
 
-require _PS_MODULE_DIR_.'prestashopappcache/controllers/admin/Appcache.php';
-
 class PrestashopAppcache extends Module {
 
     public function __construct() {
         $this->name = 'prestashopappcache';
         $this->tab = 'front_office_features';
-        $this->version = '0.1';
+        $this->version = '0.3';
         $this->author = 'Romain Berger';
 
         parent::__construct();
