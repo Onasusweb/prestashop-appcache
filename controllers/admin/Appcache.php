@@ -104,6 +104,12 @@ class Appcache {
         }
 
         $content .= "\nNETWORK:\n*\n";
+
+        // if (Configuration::get('OFFLINE_PAGE')) {
+        //     $content .= "\nFALLBACK\n";
+        //     $content .= "/offline.html";
+        // }
+
         $file = fopen(_PS_ROOT_DIR_.'/manifest.appcache', 'w');
         fwrite($file, $content);
 

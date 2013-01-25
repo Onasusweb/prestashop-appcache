@@ -25,13 +25,13 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
                 'default' => '1'
             ),
 
-            'OFFLINE_PAGE' => array(
-                'title' => $this->l('Offline page'),
-                'desc' => $this->l('Display dedicated page when the user is offline'),
-                'cast' => 'intval',
-                'type' => 'bool',
-                'default' => '1'
-            )
+            // 'OFFLINE_PAGE' => array(
+            //     'title' => $this->l('Offline page'),
+            //     'desc' => $this->l('Display dedicated page when the user is offline'),
+            //     'cast' => 'intval',
+            //     'type' => 'bool',
+            //     'default' => '1'
+            // )
         );
 
         $this->fields_options = array(
@@ -55,13 +55,13 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
         parent::postProcess();
 
         $appcache = new Appcache;
-        if (Configuration::get('ACTIVATE_APPCACHE') == 1) {
+        if (Configuration::get('ACTIVATE_APPCACHE')) {
             $result = $appcache->generate();
             if (!$result) {
                 $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
             }
         }
-        else if (Configuration::get('ACTIVATE_APPCACHE') == 0) {
+        else {
             $appcache->disable();
         }
     }
