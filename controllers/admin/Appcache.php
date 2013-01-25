@@ -38,6 +38,7 @@ class Appcache {
         $this->parseDirectory(_PS_THEME_DIR_.'img', array('png', 'gif', 'jpg'));
 
         $this->addAttribute();
+        $this->addMimeType();
 
         return $this->write();
     }
@@ -141,6 +142,29 @@ class Appcache {
             $file = fopen($filename, 'w');
             fwrite($file, $content);
 
+            return fclose($file);
+        }
+    }
+
+    /**
+     *  Make sure the htaccess file contains the proper mime type
+     */
+    public function addMimeType() {
+        $filename = _PS_ROOT_DIR_.'/.htaccess';
+        if (!file_exists($filename)) {
+            return false;
+        }
+
+        $content = file_get_contents($filename);
+        // check if the mime type is here
+        $mimeType = '/AddType text\/cache-manifest .appcache/';
+        preg_match($mimeType, $content, $matches);
+        if ($matches) {
+            return true;
+        }
+        else {
+            $file = fopen($filename, 'a');
+            fwrite($file, "\n\nAddType text/cache-manifest .appcache\n");
             return fclose($file);
         }
     }
