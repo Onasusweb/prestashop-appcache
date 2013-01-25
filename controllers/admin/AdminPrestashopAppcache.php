@@ -5,7 +5,7 @@
  *  https://github.com/romainberger/prestashop-appcache
  *
  *  @author Romain Berger <romain@romainberger.com>
- *  @version 0.1
+ *  @version 0.3
  */
 
 require _PS_MODULE_DIR_.'prestashopappcache/controllers/admin/Appcache.php';
