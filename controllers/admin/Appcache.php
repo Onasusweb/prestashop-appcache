@@ -12,7 +12,8 @@ class Appcache {
 
     private $files;
     private $extensions;
-    private $directories;
+    private $directoriesAdd;
+    private $directoriesIgnore;
 
     /**
      *  Function to generate the manifest file
@@ -21,7 +22,9 @@ class Appcache {
      */
     public function generate() {
         // get the extensions allowed
-        // $ext = Configuration::get('APPCACHE_EXTENSIONS');
+        $this->extensions = explode(',', Configuration::get('APPCACHE_EXTENSIONS'));
+        $this->directoriesAdd = explode(',', Configuration::get('APPCACHE_DIRECTORY_ADD'));
+        $this->directoriesIgnore = explode(',', Configuration::get('APPCACHE_DIRECTORY_IGNORE'));
 
         // css
         if (Configuration::get('PS_CSS_THEME_CACHE')) {

@@ -47,8 +47,6 @@ class PrestashopAppcache extends Module {
 
     /**
      *  Add the manifest appcache mime type to htaccess
-     *  @TODO Move this method in the appcache controller
-     *      and also run this when the appcache is generated
      */
     public function hookActionHtaccessCreate($params) {
         $appcache = new Appcache;
