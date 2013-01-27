@@ -127,23 +127,25 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
     }
 
     public function initToolbar() {
-        parent::initToolbar();
-        unset($this->toolbar_btn['save']);
+        $this->toolbar_btn['save'] = array(
+            'href' => '#',
+            'desc' => $this->l('Save')
+        );
     }
 
     public function postProcess() {
         parent::postProcess();
 
-        $appcache = new Appcache;
-        if (Configuration::get('APPCACHE_ACTIVATE')) {
-            $result = $appcache->generate();
-            if (!$result) {
-                $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
-            }
-        }
-        else {
-            $appcache->disable();
-        }
+        // $appcache = new Appcache;
+        // if (Configuration::get('APPCACHE_ACTIVATE')) {
+        //     $result = $appcache->generate();
+        //     if (!$result) {
+        //         $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
+        //     }
+        // }
+        // else {
+        //     $appcache->disable();
+        // }
     }
 
 }
