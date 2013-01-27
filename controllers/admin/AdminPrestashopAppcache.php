@@ -13,9 +13,6 @@ require _PS_MODULE_DIR_.'prestashopappcache/controllers/admin/Appcache.php';
 class AdminPrestashopAppcacheController extends ModuleAdminController {
 
     public function initFieldsetConfiguration() {
-        // $this->className    = 'AdminPrestashopAppcache';
-        // $this->table = 'configuration';
-
         $this->fields_form[0]['form'] = array(
             'legend' => array(
                 'title' => $this->l('Application cache configuration'),
@@ -65,6 +62,10 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
                     ),
                     'desc' => $this->l('Display a dedicated page when the user is offline')
                 )
+            ),
+            'submit' => array(
+                'title' => $this->l('   Save   '),
+                'class' => 'button'
             )
         );
 
@@ -97,15 +98,16 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
                 array(
                     'type' => 'text',
                     'label' => $this->l('Directories to ignore'),
-                    'name' => 'DIRECTORIES_AVOID',
+                    'name' => 'DIRECTORIES_IGNORE',
                     'size' => 100,
                     'desc' => $this->l('List the directories to ignore')
                 ),
             )
         );
 
-        // $this->fields_value['_MEDIA_SERVER_1_'] = Tools::getValue('_MEDIA_SERVER_1_', _MEDIA_SERVER_1_);
-        // $this->fields_value['_MEDIA_SERVER_2_'] = Tools::getValue('_MEDIA_SERVER_2_', _MEDIA_SERVER_2_);
+        $this->fields_value['EXTENSIONS'] = Configuration::get('APPCACHE_EXTENSIONS');
+        $this->fields_value['DIRECTORIES_ADD'] = Configuration::get('APPCACHE_DIRECTORIES_ADD');
+        $this->fields_value['DIRECTORIES_IGNORE'] = Configuration::get('APPCACHE_DIRECTORIES_IGNORE');
     }
 
     public function renderForm() {
@@ -118,7 +120,6 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
 
     public function initContent() {
         $this->initToolbar();
-        $this->display = '';
         $this->content .= $this->renderForm();
 
         $this->context->smarty->assign(array(
@@ -134,18 +135,53 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
     }
 
     public function postProcess() {
-        parent::postProcess();
+        if (isset($_POST) && !empty($_POST)) {
+            // Update configuration
+            Configuration::updateValue('APPCACHE_ACTIVATE', Tools::getValue('APPCACHE_ACTIVATE'));
+            if (Configuration::get('APPCACHE_ACTIVATE')) {
+                Configuration::updateValue('APPCACHE_OFFLINE_PAGE', Tools::getValue('APPCACHE_OFFLINE_PAGE'));
+            }
+            else {
+                Configuration::updateValue('APPCACHE_OFFLINE_PAGE', 0);
+            }
 
-        // $appcache = new Appcache;
-        // if (Configuration::get('APPCACHE_ACTIVATE')) {
-        //     $result = $appcache->generate();
-        //     if (!$result) {
-        //         $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
-        //     }
-        // }
-        // else {
-        //     $appcache->disable();
-        // }
+            Configuration::updateValue('APPCACHE_EXTENSIONS', $this->processStringList(Tools::getValue('EXTENSIONS')));
+            Configuration::updateValue('APPCACHE_DIRECTORIES_ADD', $this->processStringList(Tools::getValue('DIRECTORIES_ADD')));
+            Configuration::updateValue('APPCACHE_DIRECTORIES_IGNORE', $this->processStringList(Tools::getValue('DIRECTORIES_IGNORE')));
+        }
+
+        $appcache = new Appcache;
+
+        if (Configuration::get('APPCACHE_ACTIVATE')) {
+            $result = $appcache->generate();
+            if (!$result) {
+                $this->errors[] = Tools::displayError('An error occured while trying to generate the appcache.');
+            }
+        }
+        else {
+            $appcache->disable();
+        }
+    }
+
+    /**
+     *  Clean a string of item separated by commas
+     *
+     *  @param string $string String to process
+     *  @return string
+     */
+    public function processStringList($list) {
+        $array =  explode(',', $list);
+        $result = '';
+
+        for($i = 0; isset($array[$i]); $i++){
+            if(preg_match('/[\s\S]/', trim($array[$i]))){
+                $result .= $array[$i].',';
+            }
+        }
+
+        $result = substr($result, 0, strlen($result) - 1);
+
+        return $result;
     }
 
 }
