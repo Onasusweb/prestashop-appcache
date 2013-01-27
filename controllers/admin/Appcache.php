@@ -11,6 +11,8 @@
 class Appcache {
 
     private $files;
+    private $extensions;
+    private $directories;
 
     /**
      *  Function to generate the manifest file
@@ -18,6 +20,9 @@ class Appcache {
      *  @return boolean
      */
     public function generate() {
+        // get the extensions allowed
+        // $ext = Configuration::get('APPCACHE_EXTENSIONS');
+
         // css
         if (Configuration::get('PS_CSS_THEME_CACHE')) {
             $this->parseDirectory(_PS_THEME_DIR_.'cache', array('css'));
@@ -106,9 +111,9 @@ class Appcache {
 
         $content .= "\nNETWORK:\n*\n";
 
-        // if (Configuration::get('OFFLINE_PAGE')) {
+        // if (Configuration::get('APPCACHE_OFFLINE_PAGE')) {
         //     $content .= "\nFALLBACK\n";
-        //     $content .= "/offline.html";
+        //     $content .= "/ offline.html\n";
         // }
 
         $file = fopen(_PS_ROOT_DIR_.'/manifest.appcache', 'w');
