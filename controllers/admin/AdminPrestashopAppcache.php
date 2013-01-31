@@ -81,13 +81,14 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
             ),
             'desc' => $this->l(''),
             'input' => array(
-                array(
-                    'type' => 'text',
-                    'label' => $this->l('Extensions'),
-                    'name' => 'EXTENSIONS',
-                    'size' => 100,
-                    'desc' => $this->l('List the extensions to add, seperated by commas')
-                ),
+                // Disabled for now, we'll see if this is actually useful
+                // array(
+                //     'type' => 'text',
+                //     'label' => $this->l('Extensions'),
+                //     'name' => 'EXTENSIONS',
+                //     'size' => 100,
+                //     'desc' => $this->l('List the extensions to add, seperated by commas')
+                // ),
                 array(
                     'type' => 'text',
                     'label' => $this->l('Directories to add'),
@@ -100,12 +101,12 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
                     'label' => $this->l('Directories to ignore'),
                     'name' => 'DIRECTORIES_IGNORE',
                     'size' => 100,
-                    'desc' => $this->l('List the directories to ignore')
+                    'desc' => $this->l('List the images directories to ignore')
                 ),
             )
         );
 
-        $this->fields_value['EXTENSIONS'] = Configuration::get('APPCACHE_EXTENSIONS');
+        // $this->fields_value['EXTENSIONS'] = Configuration::get('APPCACHE_EXTENSIONS');
         $this->fields_value['DIRECTORIES_ADD'] = Configuration::get('APPCACHE_DIRECTORIES_ADD');
         $this->fields_value['DIRECTORIES_IGNORE'] = Configuration::get('APPCACHE_DIRECTORIES_IGNORE');
     }
@@ -145,7 +146,7 @@ class AdminPrestashopAppcacheController extends ModuleAdminController {
                 Configuration::updateValue('APPCACHE_OFFLINE_PAGE', 0);
             }
 
-            Configuration::updateValue('APPCACHE_EXTENSIONS', $this->processStringList(Tools::getValue('EXTENSIONS')));
+            // Configuration::updateValue('APPCACHE_EXTENSIONS', $this->processStringList(Tools::getValue('EXTENSIONS')));
             Configuration::updateValue('APPCACHE_DIRECTORIES_ADD', $this->processStringList(Tools::getValue('DIRECTORIES_ADD')));
             Configuration::updateValue('APPCACHE_DIRECTORIES_IGNORE', $this->processStringList(Tools::getValue('DIRECTORIES_IGNORE')));
         }

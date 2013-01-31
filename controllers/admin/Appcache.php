@@ -26,24 +26,15 @@ class Appcache {
         $this->directoriesAdd = explode(',', Configuration::get('APPCACHE_DIRECTORY_ADD'));
         $this->directoriesIgnore = explode(',', Configuration::get('APPCACHE_DIRECTORY_IGNORE'));
 
-        // css
         if (Configuration::get('PS_CSS_THEME_CACHE')) {
-            $this->parseDirectory(_PS_THEME_DIR_.'cache', array('css'));
+            $this->parseDirectory(_PS_THEME_DIR_.'cache');
         }
         else {
-            $this->parseDirectory(_PS_THEME_DIR_.'css', array('css'));
+            $this->parseDirectory(_PS_THEME_DIR_.'css');
+            $this->parseDirectory(_PS_THEME_DIR_.'js');
         }
 
-        // js
-        if (Configuration::get('PS_JS_THEME_CACHE')) {
-            $this->parseDirectory(_PS_THEME_DIR_.'cache', array('js'));
-        }
-        else {
-            $this->parseDirectory(_PS_THEME_DIR_.'js', array('js'));
-        }
-
-        // img
-        $this->parseDirectory(_PS_THEME_DIR_.'img', array('png', 'gif', 'jpg'));
+        $this->parseDirectory(_PS_THEME_DIR_.'img');
 
         $this->addAttribute();
         $this->addMimeType();
@@ -55,9 +46,8 @@ class Appcache {
      *  Parse a directory to get all the filenames
      *
      *  @param string $path Path to the directory
-     *  @param array $extension Extensions of the files to keep
      */
-    public function parseDirectory($path, $extension) {
+    public function parseDirectory($path) {
         $files = scandir($path);
         $result = array();
 
@@ -65,7 +55,7 @@ class Appcache {
         // filter the files to only return the type wanted
         foreach ($files as $file) {
             $infos = pathInfo($path.$file);
-            if (isset($infos['extension']) && in_array($infos['extension'], $extension)) {
+            if (isset($infos['extension']) && in_array($infos['extension'], $this->extensions)) {
                 $diff = str_replace(_PS_THEME_DIR_, '', $path);
                 $this->files[] = _PS_BASE_URL_.__PS_BASE_URI__.'themes/'._THEME_NAME_.'/'.$diff.'/'.$file;
             }
