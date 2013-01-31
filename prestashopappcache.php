@@ -30,6 +30,8 @@ class PrestashopAppcache extends Module {
         $tab->id_parent = 17;
         $tab->add();
 
+        Configuration::updateValue('APPCACHE_EXTENSIONS', 'css,js,png,jpg,gif,svg');
+
         if (!parent::install()
             || !$this->registerHook('actionHtaccessCreate'))
             return false;
