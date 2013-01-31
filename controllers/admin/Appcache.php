@@ -24,7 +24,7 @@ class Appcache {
         // get the extensions allowed
         $this->extensions = explode(',', Configuration::get('APPCACHE_EXTENSIONS'));
         $this->directoriesAdd = explode(',', Configuration::get('APPCACHE_DIRECTORY_ADD'));
-        $this->directoriesIgnore = explode(',', Configuration::get('APPCACHE_DIRECTORY_IGNORE'));
+        $this->directoriesIgnore = explode(',', Configuration::get('APPCACHE_DIRECTORIES_IGNORE'));
 
         if (Configuration::get('PS_CSS_THEME_CACHE')) {
             $this->parseDirectory(_PS_THEME_DIR_.'cache');
@@ -55,6 +55,10 @@ class Appcache {
         // filter the files to only return the type wanted
         foreach ($files as $file) {
             $infos = pathInfo($path.$file);
+            if (in_array(basename($path), $this->directoriesIgnore)) {
+                continue;
+            }
+
             if (isset($infos['extension']) && in_array($infos['extension'], $this->extensions)) {
                 $diff = str_replace(_PS_THEME_DIR_, '', $path);
                 $this->files[] = _PS_BASE_URL_.__PS_BASE_URI__.'themes/'._THEME_NAME_.'/'.$diff.'/'.$file;
